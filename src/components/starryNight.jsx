@@ -10,10 +10,13 @@ const StarryNight = ({ children }) => {
     }
     const starCount = useRef(Math.floor((maxDimension * maxDimension * 1.5) / 15000))
     const [stars, setStars] = useState(new Array(starCount.current).fill(0).map(() => ({ ...randomXY(), size: getRandomInt(2, 0.5), opacity: 1 })))
-    const twinkling = useRef({})
+    const twinkling = useRef({}) // not a dep in useCallback - not normal 
 
-    const draw = useCallback(() => {
-        setStars((currentStars) => {
+    const draw = useCallback(() => { // tells react that we dont need to redefine this between renders- 
+        setStars((currentStars) => { // can use a setter by passing func where the param to the callb ack is the current value, returned value is the new state
+            // can be a safety reason to use this callback - when handling multiple successive setState - stable calculation of an update in state - and maybe 
+
+            // cant setState in a useEffect
             if (!currentStars) return
             const nextStars = []
             for (let i = 0; i < currentStars.length; i++) {

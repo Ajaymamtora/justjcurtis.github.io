@@ -8,12 +8,24 @@ import { BowlFillLoader } from "../bowlFillLoader"
 const LoadingPage = ({ done }) => {
     const loadingText = useRef(LOADING_MESSAGES[getRandomInt(LOADING_MESSAGES.length - 1)])
     const timeoutRef = useRef()
-    useEffect(() => {
+
+    // mount vs render? mount = first time its rendered. useEffect only fires on the mount (first render) - or dep array changes
+    // common to use empty deps 
+    useEffect(() => { // useffect first arg func cant be async - normally you'd have useState(...) - fetch whenever -> set in state and then
+        // tie as a dependency here in a useEffect. -- Common pattern for initialising a component with data
+        
         if (timeoutRef.current) clearTimeout(timeoutRef.current)
         timeoutRef.current = setTimeout(() => {
             done(true)
         }, ((LOADING_SECONDS * 1000) + 800))
-    }, [done])
+
+        // tidy up here, wont run on the first mount
+        //return () => {
+        //clearTimeout(timeoutRef.current)
+        // document.removeEv....
+        //}
+    }, [done]) // eslint-disable-line react-hooks/exhaustive-deps - maybe you only want to fire on the mount and not when deps recompute
+
     return (
         <>
             <LoadingBG />

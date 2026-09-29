@@ -24,8 +24,8 @@ const styles = {
 }
 
 function App() {
-  const images = useImageUrls()
-  const initialImages = useRef(images)
+  const images = useImageUrls() // using a hook to wrap fetching a context is preferred
+  const initialImages = useRef(images) // refs survive rerenders
   const location = useLocation()
   const [doneLoading, setDoneLoading] = useState(false)
 
